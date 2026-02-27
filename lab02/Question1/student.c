@@ -31,7 +31,39 @@
 
 bool isValid(const char *s) {
     // TODO: Implement using a stack.
-    //
+    
+
+    if (s == NULL) return false;
+
+    size_t len = strlen(s);
+    if (len % 2 != 0) return false;
+
+    // Use a char array as a stack
+    char stack[len + 1];
+    int top = -1;
+
+    for (size_t i = 0; i < len; i++) {
+        char c = s[i];
+
+        // Push opening brackets
+        if (c == '(' || c == '[' || c == '{') {
+            stack[++top] = c;
+        } else {
+            // Closing bracket: stack must not be empty
+            if (top == -1) return false;
+
+            char expected;
+            if      (c == ')') expected = '(';
+            else if (c == ']') expected = '[';
+            else               expected = '{';
+
+            if (stack[top] != expected) return false;
+            top--; // pop
+        }
+    }
+
+    return top == -1; // stack must be empty
+}
     // Recommended approach:
     // - Use a char array as a stack to store opening brackets.
     // - Scan the string from left to right:
@@ -54,6 +86,5 @@ bool isValid(const char *s) {
     // Note:
     // - Input contains only bracket characters, per the prompt.
 
-    (void)s; // remove after implementing
     return false; // placeholder
 }
